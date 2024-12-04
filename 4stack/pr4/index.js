@@ -13,12 +13,14 @@ class LinkedList {
 
   append(value) {
     const node = new Node(value);
+
     if (this.head === null) {
       this.head = node;
       this.listSize++;
+
       return;
     }
-    let lastNode = this.head;
+
     while (lastNode.next !== null) {
       lastNode = lastNode.next;
     }
@@ -28,12 +30,14 @@ class LinkedList {
 
   prepend(value) {
     const node = new Node(value);
+
     if (this.head === null) {
       this.head = node;
       this.listSize++;
+
       return;
     }
-    node.next = his.head;
+    node.next = this.head;
     this.head = node;
     this.listSize++;
   }
@@ -50,10 +54,13 @@ class LinkedList {
     if (this.listSize === 0) {
       return null;
     }
+
     let lastNode = this.head;
+
     while (lastNode.next !== null) {
       lastNode = lastNode.next;
     }
+
     return lastNode.value;
   }
 
@@ -61,27 +68,31 @@ class LinkedList {
     if (this.listSize === 0) {
       return null;
     }
+
     return this.head.value;
   }
 
   clear() {
     this.head = null;
-    this.last = null;
     this.listSize = 0;
   }
 
   delete(value) {
     let previosNode = null;
     let currentNode = this.head;
+
     if (currentNode.value === value) {
       this.head = currentNode.next;
       this.listSize--;
+
       return;
     }
+
     while (currentNode.next !== null && currentNode.value !== value) {
       previosNode = currentNode;
       currentNode = currentNode.next;
     }
+
     if (currentNode === null) {
       return;
     }
@@ -94,33 +105,21 @@ class LinkedList {
     if (position === 0) {
       this.head = this.head.next;
       this.listSize--;
+
       return;
     }
+
     let previosNode = this.head;
+
     for (let i = 0; previosNode !== null && i < position - 1; i++) {
       previosNode = previosNode.next;
     }
+
     if (previosNode === null || previosNode.next === null) {
       return;
     }
     previosNode.next = previosNode.next.next;
     this.listSize--;
-  }
-
-  serialize() {
-    if (this.listSize === 0) {
-      return [];
-    }
-    if (this.listSize === 1) {
-      return [this.head.value];
-    }
-    const array = [];
-    let lastNode = this.head;
-    while (lastNode !== null) {
-      array.push(lastNode.value);
-      lastNode = lastNode.next;
-    }
-    return array;
   }
 }
 
@@ -128,99 +127,82 @@ class Stack {
   constructor() {
     this.data = new LinkedList();
   }
-  /**
-   * Add value to the stack
-   * @param {number} value
-   *
-   * @returns {void}
-   */
+
   push(value) {
     this.data.prepend(value);
   }
 
-  /**
-   * Return stack size
-   *
-   * @returns {number}
-   */
-  size() {
-    // write code here
-  }
-
-  /**
-   * Return whether stack is empty
-   *
-   * @returns {number}
-   */
   isEmpty() {
     return this.data.head === null;
   }
 
-  /**
-   * Return the last added value
-   *
-   * @returns {number|null}
-   */
   peek() {
     if (this.isEmpty()) {
-      console.log("PICK: Stack is empty");
       return null;
     }
+
     return this.data.head.value;
   }
 
-  /**
-   * Return the last added value and remove it from the stack
-   *
-   * @returns {number|null}
-   */
   pop() {
     if (this.isEmpty()) {
-      console.log("POP: Stack is empty");
       return null;
     }
+
     const value = this.peek();
+
     this.data.deleteInPosition(0);
+
     return value;
   }
 
-  /**
-   * Empty the stack
-   *
-   * @returns {void}
-   */
-  clear() {
-    // write code here
-  }
-
-  /**
-   * Serialize the stack
-   *
-   * @returns {number[]}
-   */
-  serialize() {
-    // write code here
+  size() {
+    return this.data.size();
   }
 }
 
-function validate(str) {
+/**
+ * @param {string} S
+ *
+ * @returns {number}
+ */
+function minAddToMakeParenthesesValid(S) {
   const stack = new Stack();
-  for (let i = 0; i < str.length; i++) {
-    const current = str[i];
+
+  for (let i = 0; i < S.length; i++) {
+    const current = S[i];
+
     if (current === "(") {
       stack.push(current);
       continue;
     }
+
     const last = stack.peek();
+
     if (last === "(") {
       stack.pop();
     } else {
       stack.push(current);
     }
   }
-  return stack.isEmpty();
+
+  return stack.size();
 }
 
-console.log(validate("()()()"));
-console.log(validate("()()())"));
-console.log(validate("(()()()("));
+console.log(minAddToMakeParenthesesValid("()))((")); // 4
+console.log(minAddToMakeParenthesesValid("())")); // 1
+console.log(minAddToMakeParenthesesValid("(((")); // 3
+console.log(minAddToMakeParenthesesValid("()")); // 0
+
+// Щоб розпочати, спробуй розбити задачу на менші частини. Ось кілька кроків, які можуть допомогти:
+
+// Розуміння задачі: Тобі потрібно додати мінімальну кількість дужок, щоб зробити рядок валідним. Валідний рядок має збалансовані відкриваючі та закриваючі дужки.
+// Використання стеку: Стек добре підходить для задач з дужками, оскільки дозволяє легко відстежувати відкриті дужки, які ще не були закриті.
+// Алгоритм:
+
+// Пройдися по кожному символу в рядку.
+// Якщо символ '(', додай його до стеку.
+// Якщо символ ')', перевір, чи є в стеку '('. Якщо є, видали його зі стеку (це означає, що пара знайдена). Якщо немає, додай ')' до стеку (це означає, що закриваюча дужка не має пари).
+
+// Підрахунок: Кількість елементів, що залишилися в стеку, буде кількістю дужок, які потрібно додати, щоб зробити рядок валідним.
+// Спробуй реалізувати ці кроки, і якщо виникнуть питання, не соромся запитувати!

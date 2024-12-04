@@ -13,12 +13,14 @@ class LinkedList {
 
   append(value) {
     const node = new Node(value);
+
     if (this.head === null) {
       this.head = node;
       this.listSize++;
+
       return;
     }
-    let lastNode = this.head;
+
     while (lastNode.next !== null) {
       lastNode = lastNode.next;
     }
@@ -28,12 +30,14 @@ class LinkedList {
 
   prepend(value) {
     const node = new Node(value);
+
     if (this.head === null) {
       this.head = node;
       this.listSize++;
+
       return;
     }
-    node.next = his.head;
+    node.next = this.head;
     this.head = node;
     this.listSize++;
   }
@@ -50,10 +54,13 @@ class LinkedList {
     if (this.listSize === 0) {
       return null;
     }
+
     let lastNode = this.head;
+
     while (lastNode.next !== null) {
       lastNode = lastNode.next;
     }
+
     return lastNode.value;
   }
 
@@ -61,27 +68,31 @@ class LinkedList {
     if (this.listSize === 0) {
       return null;
     }
+
     return this.head.value;
   }
 
   clear() {
     this.head = null;
-    this.last = null;
     this.listSize = 0;
   }
 
   delete(value) {
     let previosNode = null;
     let currentNode = this.head;
+
     if (currentNode.value === value) {
       this.head = currentNode.next;
       this.listSize--;
+
       return;
     }
+
     while (currentNode.next !== null && currentNode.value !== value) {
       previosNode = currentNode;
       currentNode = currentNode.next;
     }
+
     if (currentNode === null) {
       return;
     }
@@ -94,33 +105,21 @@ class LinkedList {
     if (position === 0) {
       this.head = this.head.next;
       this.listSize--;
+
       return;
     }
+
     let previosNode = this.head;
+
     for (let i = 0; previosNode !== null && i < position - 1; i++) {
       previosNode = previosNode.next;
     }
+
     if (previosNode === null || previosNode.next === null) {
       return;
     }
     previosNode.next = previosNode.next.next;
     this.listSize--;
-  }
-
-  serialize() {
-    if (this.listSize === 0) {
-      return [];
-    }
-    if (this.listSize === 1) {
-      return [this.head.value];
-    }
-    const array = [];
-    let lastNode = this.head;
-    while (lastNode !== null) {
-      array.push(lastNode.value);
-      lastNode = lastNode.next;
-    }
-    return array;
   }
 }
 
@@ -128,99 +127,81 @@ class Stack {
   constructor() {
     this.data = new LinkedList();
   }
-  /**
-   * Add value to the stack
-   * @param {number} value
-   *
-   * @returns {void}
-   */
+
   push(value) {
     this.data.prepend(value);
   }
 
-  /**
-   * Return stack size
-   *
-   * @returns {number}
-   */
-  size() {
-    // write code here
-  }
-
-  /**
-   * Return whether stack is empty
-   *
-   * @returns {number}
-   */
   isEmpty() {
     return this.data.head === null;
   }
 
-  /**
-   * Return the last added value
-   *
-   * @returns {number|null}
-   */
   peek() {
     if (this.isEmpty()) {
-      console.log("PICK: Stack is empty");
       return null;
     }
+
     return this.data.head.value;
   }
 
-  /**
-   * Return the last added value and remove it from the stack
-   *
-   * @returns {number|null}
-   */
   pop() {
     if (this.isEmpty()) {
-      console.log("POP: Stack is empty");
       return null;
     }
+
     const value = this.peek();
+
     this.data.deleteInPosition(0);
+
     return value;
   }
 
-  /**
-   * Empty the stack
-   *
-   * @returns {void}
-   */
-  clear() {
-    // write code here
-  }
-
-  /**
-   * Serialize the stack
-   *
-   * @returns {number[]}
-   */
-  serialize() {
-    // write code here
+  size() {
+    return this.data.size();
   }
 }
 
-function validate(str) {
-  const stack = new Stack();
-  for (let i = 0; i < str.length; i++) {
-    const current = str[i];
-    if (current === "(") {
-      stack.push(current);
-      continue;
+/**
+ * @param {string} S
+ *
+ * @returns {string}
+ */
+// function removeOuterParentheses(S) {
+//   let result = "";
+//   let temp = "";
+//   let balance = 0;
+//   for (let i = 0; i < S.length; i++) {
+//     temp += S[i];
+//     if (S[i] === "(") {
+//       balance++;
+//     }
+//     if (S[i] === ")") {
+//       balance--;
+//     }
+//     if (balance === 0) {
+//       result += temp.substring(1, temp.length - 1);
+//       temp = "";
+//     }
+//   }
+//   return result;
+// }
+function removeOuterParentheses(S) {
+  let result = "";
+  let balance = 0;
+  for (let i = 0; i < S.length; i++) {
+    if (S[i] === "(") {
+      balance++;
     }
-    const last = stack.peek();
-    if (last === "(") {
-      stack.pop();
-    } else {
-      stack.push(current);
+    if (S[i] === ")") {
+      balance--;
+    }
+    if ((balance > 1 && S[i] === "(") || (balance > 0 && S[i] === ")")) {
+      result += S[i];
     }
   }
-  return stack.isEmpty();
+  return result;
 }
 
-console.log(validate("()()()"));
-console.log(validate("()()())"));
-console.log(validate("(()()()("));
+console.log(removeOuterParentheses("(()())(())")); // "()()()"
+console.log(removeOuterParentheses("(()())(())(()(()))")); // "()()()()(())"
+console.log(removeOuterParentheses("()()")); // ""
