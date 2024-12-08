@@ -30,16 +30,7 @@ class HashMap {
     if (this.data[index]) {
       let curNode = this.data[index];
 
-      // if (curNode.key === key) {
-      //   curNode.value = value;
-      //   return;
-      // }
-
       while (curNode.next !== null) {
-        // if (curNode.next.key === key) {
-        //   curNode.next.value = value;
-        //   return;
-        // }
         curNode = curNode.next;
       }
 
@@ -184,30 +175,176 @@ class HashSet {
     this.data = new HashMap();
   }
 
+  /**
+   * Add value to the set
+   * @param {number} value
+   *
+   * @returns {void}
+   */
   add(value) {
     this.data.set(value, true);
   }
 
-  contains(value) {
+  /**
+   * Check if the value is present in the set
+   * @param {number} value
+   *
+   * @returns {boolean}
+   */
+  has(value) {
     return this.data.get(value) === true;
   }
-}
 
-const set = new HashSet();
+  /**
+   * Remove the value from the set
+   * @param {number} value
+   *
+   * @returns {boolean}
+   */
+  remove(value) {
+    const isValue = this.has(value);
+    if (!isValue) {
+      return;
+    }
+    const index = this.data.getIndex(value);
+    const deletionValue = this.data.data[index];
+    this.data.data[index] = null;
+    this.data.size--;
+    return deletionValue;
+  }
 
-// set.add("abc");
-// set.add("abc");
-// set.add("abcd");
-// console.log(set.contains("abc"));
+  /**
+   * Empty the set
+   * @returns {void}
+   */
+  clear() {
+    this.data.clear();
+  }
 
-// console.log(JSON.stringify(set, null, 2));
+  /**
+   * Return set's values
+   * @returns {number[]}
+   */
+  values() {
+    return this.data.keys();
+  }
 
-const str = "I love coding";
-
-for (let i = 0; i < str.length; i++) {
-  if (str[i].trim()) {
-    set.add(str[i]);
+  /**
+   * Return set's size
+   * @returns {number}
+   */
+  size() {
+    return this.data.size;
   }
 }
-console.log(JSON.stringify(set, null, 2));
-console.log(set.contains("o"));
+
+/**
+ * @param { String[][] } table
+ *
+ * @returns { String[][] }
+ */
+function removeDuplicatedValues(table) {
+  // const set = new HashSet();
+  // const result = new Array(table.length);
+  // for (let i = 0; i < table[table.length - 1].length; i++) {
+  //   set.add(table[table.length - 1][i]);
+  // }
+  // for (let i = table.length - 1; i >= 0; i--) {
+  //   if (i === table.length - 1) {
+  //     result[i] = set.values();
+  //   } else {
+  //     const subArray = [];
+  //     for (let j = 0; j < table[i].length; j++) {
+  //       if (!set.has(table[i][j])) {
+  //         set.add(table[i][j]);
+  //         subArray.push(table[i][j]);
+  //       }
+  //     }
+  //     result[i] = subArray;
+
+  // }
+  // return result;
+  const set = new HashSet();
+  const result = new Array(table.length);
+  for (let i = table.length - 1; i >= 0; i--) {
+    const subArray = [];
+    for (let j = 0; j < table[i].length; j++) {
+      if (!set.has(table[i][j])) {
+        set.add(table[i][j]);
+        subArray.push(table[i][j]);
+      }
+    }
+    result[i] = subArray;
+  }
+  return result;
+}
+
+// function removeDuplicatedValues(table) {
+//   const result = [];
+
+//   for (let i = table.length - 1; i >= 0; i--) {
+//     if (i === table.length - 1) {
+//       const set = new HashSet();
+
+//       for (let j = 0; j < table[i].length; j++) {
+//         set.add(table[i][j]);
+//       }
+//       result[i] = set;
+//     } else {
+//       const set = new HashSet();
+
+//       for (let j = 0; j < table[i].length; j++) {
+//         const prevSetHas = result[i + 1].has(table[i][j]);
+
+//         if (!prevSetHas) {
+//           set.add(table[i][j]);
+//         }
+//       }
+//       result[i] = set;
+//     }
+//   }
+
+//   return result.map((s) => s.values());
+// }
+
+const arr1 = [
+  ["C", "F", "G"],
+  ["A", "B", "C"],
+  ["A", "B", "D"],
+];
+// [
+//   ["F", "G"],
+//   ["C"],
+//   ["A", "B", "D"],
+// ]
+
+const arr2 = [["A"], ["A"], ["A"]];
+// [
+//   [],
+//   [],
+//   ["A"],
+// ]
+
+const arr3 = [
+  ["F", "X", "T", "D"],
+  ["E", "B", "Q"],
+  [],
+  [],
+  ["H", "Q", "T", "A"],
+  ["N", "T"],
+  ["P"],
+  ["B", "W", "M", "V", "I", "K", "S"],
+  ["C", "O", "R", "Y", "D", "U"],
+];
+// [
+//   ['F', 'X'],
+//   ['E'],
+//   [],
+//   [],
+//   ['H', 'Q', 'A'],
+//   ['N', 'T'],
+//   ['P'],
+//   ['B', 'W', 'M', 'V', 'I', 'K', 'S'],
+//   ['C', 'O', 'R', 'Y', 'D', 'U'],
+// ]
+console.log(removeDuplicatedValues(arr3));
