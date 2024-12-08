@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,6 +16,15 @@ public class Main {
         System.out.println(array[0]);
 
         test();
+
+        System.out.println("\n");
+        Integer n1 = 5;
+        Integer n2 = 5;
+        System.out.println(n1 == n2); // true
+        Integer n3 = new Integer(5);
+        Integer n4 = new Integer(5);
+        System.out.println(n3 == n4); // false
+        System.out.println(10 >> 1); // 5
     }
 
     public static void test() {
