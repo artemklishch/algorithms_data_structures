@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -25,6 +22,10 @@ public class Main {
         Integer n4 = new Integer(5);
         System.out.println(n3 == n4); // false
         System.out.println(10 >> 1); // 5
+
+        Set<Integer> set = new HashSet<>();
+        Queue<Integer> queue = new LinkedList<>();
+        Stack<Integer> stack = new Stack<>();
     }
 
     public static void test() {
