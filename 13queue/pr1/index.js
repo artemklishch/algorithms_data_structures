@@ -96,34 +96,37 @@ class DoublyLinkedList {
   }
 }
 
-class Stack {
+class Queue {
   constructor() {
     this.listOfElements = new DoublyLinkedList();
   }
 
-  push(value) {
+  enqueue(value) {
     this.listOfElements.append(value);
   }
 
   peek() {
     if (!this.listOfElements.isEmpty()) {
-      return this.listOfElements.tail?.value || null;
+      return this.listOfElements.tail.value;
     }
   }
 
-  pop() {
+  dequeue() {
     if (this.listOfElements.isEmpty()) {
       return;
     }
-    const value = this.listOfElements.tail.value;
+    const value = this.listOfElements.head.value;
     this.listOfElements.popBack();
     return value;
   }
 }
 
-const stack = new Stack();
+const queue = new Queue();
 
-stack.push("Harry Potter: Philosopher");
-console.log(stack.peek());
-console.log(stack.pop());
-console.log(stack.peek());
+queue.enqueue("John");
+queue.enqueue("Bob");
+queue.enqueue("Alice");
+console.log(queue, null, 1);
+console.log(queue.peek());
+console.log(queue.dequeue());
+console.log(queue, null, 1);
