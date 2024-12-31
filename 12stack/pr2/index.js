@@ -25,11 +25,11 @@ class Stack {
 const stack = new Stack();
 
 stack.push("Harry Potter: Philosopher");
-console.log(stack.peek());
-console.log(stack.pop());
-console.log(stack.peek());
+// console.log(stack.peek());
+// console.log(stack.pop());
+// console.log(stack.peek());
 
-console.log("\n");
+// console.log("\n");
 
 // ()
 // {}
@@ -58,4 +58,23 @@ function isValidParantheses(sequence) {
   return true;
 }
 
-console.log(isValidParantheses("{([[]])}}"));
+// console.log(isValidParantheses("{([[]])}("));
+
+function isValidParantheses1(sequence) {
+  const stack = new Stack();
+  for (let i = 0; i < sequence.length; i++) {
+    const char = sequence[i];
+    if (char === "(") {
+      stack.push(char);
+    } else {
+      const last = stack.pop();
+      if (char === ")" && last !== "(") {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+
+console.log(isValidParantheses("((()))("));
